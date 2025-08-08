@@ -4,7 +4,7 @@ export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
     website: 'https://zenus10.com/', // Site domain
-    title: 'Zenus10', // Site title
+    title: 'Zenus10\'s Blog', // Site title
     author: 'Zenus10', // Author name
     description: 'my personal blog', // Site description
     language: 'en-US' // Default language
