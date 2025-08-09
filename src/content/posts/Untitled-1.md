@@ -1,7 +1,7 @@
 ---
 title: 'test'
 pubDate: '2025-08-09'
-tags: ['first-post', 'testing', 'blog']
+tags: ['blog']
 ---
 
 the first try

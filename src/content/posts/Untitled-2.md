@@ -1,7 +1,7 @@
 ---
 title: 'Example Post with Tags'
 pubDate: '2025-08-09'
-tags: ['tech', 'javascript', 'tutorial', 'webdev']
+tags: ['tech']
 ---
 
 This is an example post that demonstrates the new tag functionality.
