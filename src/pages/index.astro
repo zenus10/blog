@@ -2,6 +2,7 @@
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import About from '@/components/widgets/About.astro'
 import PostList from '@/components/widgets/PostList.astro'
+import TagFilter from '@/components/widgets/TagFilter.astro'
 import { themeConfig } from '@/config'
 import { getSortedFilteredPosts } from '@/utils/draft'
 
@@ -10,6 +11,10 @@ const posts = await getSortedFilteredPosts()
 
 <IndexLayout title={themeConfig.site.title} description={themeConfig.site.description}>
   <About />
+
+  <!-- 标签筛选组件 -->
+  <TagFilter posts={posts} />
+
   <main>
     <PostList posts={posts} />
   </main>

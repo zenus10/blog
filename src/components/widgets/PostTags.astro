@@ -1,0 +1,82 @@
+---
+interface Props {
+  tags: string[]
+}
+
+const { tags = [] } = Astro.props
+
+// 如果没有标签，不显示组件
+if (!tags || tags.length === 0) {
+  return null
+}
+---
+
+<div class="post-tags">
+  <span class="tags-label">Tagged:</span>
+  <div class="tags-list">
+    {
+      tags.map((tag) => (
+        <a
+          href={`/?tag=${encodeURIComponent(tag)}`}
+          class="tag-link"
+          title={`View all posts tagged with ${tag}`}
+        >
+          {tag}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 3rem 0 1rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .tags-label {
+    color: var(--text-secondary);
+    font-size: var(--font-size-s);
+    white-space: nowrap;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-link {
+    display: inline-block;
+    background: var(--astro-code-background);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.25rem 0.75rem;
+    font-size: var(--font-size-s);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .tag-link:hover {
+    background: var(--selection);
+    color: var(--text-primary);
+    border-color: var(--text-tertiary);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .post-tags {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style>
