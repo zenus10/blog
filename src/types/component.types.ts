@@ -12,6 +12,7 @@ export interface PostLayoutProps {
   image?: string
   readingTime?: ReadingTime
   toc?: TOCItem[]
+  tags?: string[]  // 添加标签支持
 }
 
 // Transition props interface
@@ -89,4 +90,18 @@ export interface LinkCardMetadata {
   description: string
   image: string
   imageAlt: string
+}
+
+// Tag filter props interface
+export interface TagFilterProps {
+  posts: Array<{
+    data: {
+      tags?: string[]
+    }
+  }>
+}
+
+// Post tags component props interface
+export interface PostTagsProps {
+  tags: string[]
 }
