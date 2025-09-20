@@ -1,28 +1,131 @@
 ---
 import { themeConfig } from '@/config'
 import ThemeToggle from '@/components/ui/ThemeToggle.astro'
+
+// 获取当前页面路径
+const currentPath = Astro.url.pathname
 ---
 
 <header>
   <nav>
-    <a href="/">{themeConfig.site.title}</a>
-    <ThemeToggle />
+    <div class="nav-left">
+      <a href="/" class="site-title">{themeConfig.site.title}</a>
+    </div>
+
+    <div class="nav-center">
+      <a href="/" class={`nav-link ${currentPath === '/' ? 'active' : ''}`}> 首页 </a>
+      <a href="/friends" class={`nav-link ${currentPath === '/friends' ? 'active' : ''}`}> 友链 </a>
+    </div>
+
+    <div class="nav-right">
+      <ThemeToggle />
+    </div>
   </nav>
 </header>
+
 <style>
   header {
     margin: 0;
   }
+
   nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
   }
-  header a {
+
+  .nav-left,
+  .nav-right {
+    flex: 1;
+  }
+
+  .nav-right {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .nav-center {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .site-title {
     font-weight: var(--font-weight-bold);
     color: var(--text-primary);
     text-decoration: none;
-    min-width: 3rem;
-    display: inline-block;
+    font-size: var(--font-size-l);
+  }
+
+  .nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-regular);
+    transition: color 0.2s ease;
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .nav-link.active {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 1px;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 640px) {
+    .nav-center {
+      gap: 1.5rem;
+    }
+
+    .site-title {
+      font-size: var(--font-size-m);
+    }
+
+    .nav-link {
+      font-size: var(--font-size-s);
+    }
+  }
+
+  /* 超小屏幕 */
+  @media (max-width: 480px) {
+    nav {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .nav-left,
+    .nav-right {
+      flex: none;
+    }
+
+    .nav-left {
+      text-align: center;
+    }
+
+    .nav-center {
+      justify-content: center;
+      order: -1;
+    }
+
+    .nav-right {
+      justify-content: center;
+    }
   }
 </style>

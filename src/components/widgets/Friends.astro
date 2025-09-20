@@ -1,0 +1,253 @@
+---
+import { friendsConfig, getFriendsByCategory } from '@/config.friends'
+
+interface Props {
+  showAll?: boolean
+  maxDisplay?: number
+  showCategories?: boolean
+}
+
+const { showAll = false, maxDisplay = 4, showCategories = false } = Astro.props
+
+const categorizedFriends = getFriendsByCategory()
+const displayFriends = showAll ? friendsConfig.friends : friendsConfig.friends.slice(0, maxDisplay)
+---
+
+<div class="friends-container">
+  <div class="friends-header">
+    <h3 class="friends-title">{friendsConfig.title}</h3>
+    <p class="friends-description">{friendsConfig.description}</p>
+  </div>
+
+  {
+    showCategories ? (
+      <div class="friends-by-category">
+        {Array.from(categorizedFriends.entries()).map(([category, friends]) => (
+          <div class="category-group">
+            <h4 class="category-title">{category}</h4>
+            <div class="friends-grid">
+              {friends.map((friend) => (
+                <a
+                  href={friend.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="friend-card"
+                  title={`访问 ${friend.name}: ${friend.description}`}
+                >
+                  {friend.avatar ? (
+                    <div class="friend-avatar">
+                      <img src={friend.avatar} alt={friend.name} loading="lazy" />
+                    </div>
+                  ) : (
+                    <div class="friend-avatar-placeholder">
+                      {friend.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div class="friend-info">
+                    <h4 class="friend-name">{friend.name}</h4>
+                    <p class="friend-desc">{friend.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="friends-grid">
+        {displayFriends.map((friend) => (
+          <a
+            href={friend.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="friend-card"
+            title={`访问 ${friend.name}: ${friend.description}`}
+          >
+            {friend.avatar ? (
+              <div class="friend-avatar">
+                <img src={friend.avatar} alt={friend.name} loading="lazy" />
+              </div>
+            ) : (
+              <div class="friend-avatar-placeholder">{friend.name.charAt(0).toUpperCase()}</div>
+            )}
+            <div class="friend-info">
+              <h4 class="friend-name">{friend.name}</h4>
+              <p class="friend-desc">{friend.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    !showAll && friendsConfig.friends.length > maxDisplay && (
+      <div class="friends-footer">
+        <a href="/friends" class="view-more-link">
+          查看全部友链 ({friendsConfig.friends.length})
+        </a>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .friends-container {
+    margin: 2rem 0;
+  }
+
+  .friends-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .friends-title {
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .friends-description {
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .category-group {
+    margin-bottom: 2rem;
+  }
+
+  .category-title {
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .friend-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--astro-code-background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .friend-card:hover {
+    background: var(--selection);
+    border-color: var(--text-tertiary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
+
+  .friend-avatar,
+  .friend-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .friend-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .friend-avatar-placeholder {
+    background: var(--code-bg);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-bold);
+    font-size: 1rem;
+  }
+
+  .friend-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .friend-name {
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .friend-desc {
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .friends-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .view-more-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--astro-code-background);
+    color: var(--text-secondary);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: var(--font-size-s);
+    transition: all 0.2s ease;
+  }
+
+  .view-more-link:hover {
+    background: var(--selection);
+    color: var(--text-primary);
+    border-color: var(--text-tertiary);
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .friends-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .friend-card {
+      padding: 0.75rem;
+    }
+
+    .friend-avatar,
+    .friend-avatar-placeholder {
+      width: 36px;
+      height: 36px;
+    }
+
+    .friend-avatar-placeholder {
+      font-size: 0.9rem;
+    }
+  }
+</style>
