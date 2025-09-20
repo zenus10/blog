@@ -34,6 +34,12 @@ export const friendsConfig: FriendsConfig = {
             description: "",
             category: "朋友"
         },
+        {
+            name: "FFw190",
+            url: "https://fw190.top",
+            description: "",
+            category: "朋友"
+        },
     ]
 }
 
