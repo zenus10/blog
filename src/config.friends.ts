@@ -35,7 +35,7 @@ export const friendsConfig: FriendsConfig = {
             category: "朋友"
         },
         {
-            name: "FFw190",
+            name: "Fw190",
             url: "https://fw190.top",
             description: "",
             category: "朋友"
